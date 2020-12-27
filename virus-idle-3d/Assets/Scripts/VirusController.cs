@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VirusCS : MonoBehaviour
+public class VirusController : MonoBehaviour
 {
     GameObject tower;
     public Slider healthBarPrefab;
@@ -20,14 +20,14 @@ public class VirusCS : MonoBehaviour
         tower = GameObject.FindGameObjectWithTag("Player");
         healthBar = Instantiate(healthBarPrefab, canvas.transform);
         healthBar.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
-        Camera.main.WorldToScreenPoint(transform.position).y+ 80, 0);
+        Camera.main.WorldToScreenPoint(transform.position).y+ 90, 0);
         healthBar.maxValue = health;
     }
     private void Update()
     {
         transform.position = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
         healthBar.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
-                Camera.main.WorldToScreenPoint(transform.position).y + 80, 0);
+                Camera.main.WorldToScreenPoint(transform.position).y + 90, 0);
         healthBar.value = health;
         if (health<=0)
         {
@@ -35,9 +35,9 @@ public class VirusCS : MonoBehaviour
             coinText.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
                 Camera.main.WorldToScreenPoint(transform.position).y,0);
             coinText.GetComponent<Text>().text = "+" + coin;
-            tower.GetComponent<TowerCS>().totalCoin += coin;
+            tower.GetComponent<TowerController>().totalCoin += coin;
             Destroy(coinText, 2);
-            Destroy(healthBar);
+            Destroy(healthBar.gameObject);
             Destroy(gameObject);
         }
     }
