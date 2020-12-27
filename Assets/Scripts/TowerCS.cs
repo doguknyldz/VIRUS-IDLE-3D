@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TowerCS : MonoBehaviour
 {
     public Text coinText;
+    public Slider stamina;
     public GameObject turret;
     public GameObject bulletPrefab;
     public float cooldown=1;
@@ -17,6 +18,11 @@ public class TowerCS : MonoBehaviour
     private void Update()
     {
         coinText.text = "Toplam Para: " + totalCoin;
+        stamina.value += cooldown / 100;
+        if (stamina.value == stamina.maxValue)
+        {
+            isShot = true;
+        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -30,15 +36,10 @@ public class TowerCS : MonoBehaviour
                 bullet.GetComponent<BulletCS>().target = collision.gameObject;
                 bullet.GetComponent<BulletCS>().damage = damage;
                 bullet.GetComponent<BulletCS>().coin = coin;
+                stamina.value = 0;
                 isShot = false;
-                StartCoroutine(Time());
             }
         }
     }
 
-    IEnumerator Time()
-    {
-        yield return new WaitForSeconds(cooldown);
-        isShot = true;
-    }
 }
