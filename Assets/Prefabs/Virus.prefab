@@ -95,8 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0412dd1dd20d09c4e9c988043b9b84c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  coinTextPrefab: {fileID: 7080223393309205160, guid: e949af2319aa3ed4e9edb49275827885, type: 3}
   speed: 0.01
   health: 2
+  coin: 0
 --- !u!64 &2586861903637464108
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class BulletCS : MonoBehaviour
 {
     public GameObject target;
     public float damage;
+    public int coin;
 
     private void Update()
     {
@@ -18,6 +19,7 @@ public class BulletCS : MonoBehaviour
         if (collision.collider.tag == "Enemy")
         {
             collision.gameObject.GetComponent<VirusCS>().health -= damage;
+            collision.gameObject.GetComponent<VirusCS>().coin = coin;
             Destroy(gameObject);
         }
     }
