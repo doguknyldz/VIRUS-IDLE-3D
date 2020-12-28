@@ -36,7 +36,7 @@ public class VirusController : MonoBehaviour
                 Camera.main.WorldToScreenPoint(transform.position).y,0);
             coinText.GetComponent<Text>().text = "+" + coin;
             tower.GetComponent<TowerController>().totalCoin += coin;
-            Destroy(coinText, 2);
+            Destroy(coinText, 1.25f);
             Destroy(healthBar.gameObject);
             Destroy(gameObject);
         }

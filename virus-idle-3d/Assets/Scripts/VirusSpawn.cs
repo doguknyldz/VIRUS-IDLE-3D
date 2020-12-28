@@ -6,7 +6,8 @@ public class VirusSpawn : MonoBehaviour
 {
     public GameObject virusPrefab;
     public GameObject[] UpgradesPrefab;
-    public float spawnTime;
+    public float spawnTimeEnemy;
+    public float spawnTimeUpgrade;
     private void Start()
     {
         StartCoroutine(SpawnEnemy());
@@ -16,14 +17,14 @@ public class VirusSpawn : MonoBehaviour
 
     IEnumerator SpawnEnemy()
     {
-        yield return new WaitForSeconds(spawnTime);
+        yield return new WaitForSeconds(spawnTimeEnemy);
         GameObject virus = Instantiate(virusPrefab);
         virus.transform.position = new Vector3(13, Random.Range(0f, 2f), Random.Range(-1.5f, 1.5f));
         StartCoroutine(SpawnEnemy());
     }
     IEnumerator SpawnUpgrade()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(spawnTimeUpgrade);
         GameObject Upgrade = Instantiate(UpgradesPrefab[Random.Range(0,UpgradesPrefab.Length)]);
         Upgrade.transform.position = new Vector3(13, Random.Range(0f, 2f), Random.Range(-1.5f, 1.5f));
         StartCoroutine(SpawnUpgrade());

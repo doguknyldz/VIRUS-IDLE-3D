@@ -51,20 +51,26 @@ public class TowerController : MonoBehaviour
             case 0:
                 coin *= 2;
                 GameObject UpTimer0 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer0.GetComponent<UpgradeTimerController>().id = id;
+                UpTimer0.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 155, 0, 255);
+                UpTimer0.transform.GetChild(3).GetComponent<Text>().text = "2x \n COIN";
                 StartCoroutine(SpawnUpgrade(id));
+                Destroy(UpTimer0, 5);
                 break;
             case 1:
                 cooldown *= 2;
                 GameObject UpTimer1 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer1.GetComponent<UpgradeTimerController>().id = id;
+                UpTimer1.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(0, 200, 255, 255);
+                UpTimer1.transform.GetChild(3).GetComponent<Text>().text = "2x \n SPEED";
                 StartCoroutine(SpawnUpgrade(id));
+                Destroy(UpTimer1, 5);
                 break;
             case 2:
                 damage *= 2;
                 GameObject UpTimer2 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer2.GetComponent<UpgradeTimerController>().id = id;
+                UpTimer2.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 0, 0, 255);
+                UpTimer2.transform.GetChild(3).GetComponent<Text>().text = "2x \n DAMAGE";
                 StartCoroutine(SpawnUpgrade(id));
+                Destroy(UpTimer2, 5);
                 break;
             default:
                 break;
