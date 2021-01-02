@@ -7,7 +7,7 @@ public class BulletController : MonoBehaviour
     public Vector3 target;
     public float damage;
     public int coin;
-
+    VirusController vc;
     private void Update()
     {
         transform.position = Vector3.Slerp(transform.position, target, 0.2f);
@@ -21,8 +21,9 @@ public class BulletController : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<VirusController>().health -= damage;
-            collision.gameObject.GetComponent<VirusController>().coin = coin;
+            vc = collision.gameObject.GetComponent<VirusController>();
+            vc.health -= damage;
+            vc.coin = coin;
             Destroy(gameObject);
         }
     }

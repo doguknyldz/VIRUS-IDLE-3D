@@ -7,7 +7,9 @@ TagManager:
   - Enemy
   - Bullet
   - Canvas
-  - Upgrade
+  - CoinUP
+  - CooldownUP
+  - DamageUP
   layers:
   - Default
   - TransparentFX

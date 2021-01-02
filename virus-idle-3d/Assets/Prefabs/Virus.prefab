@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0412dd1dd20d09c4e9c988043b9b84c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarPrefab: {fileID: 7075857232782974512, guid: 01615c0035aa52045b7c0759039f06d0, type: 3}
-  coinTextPrefab: {fileID: 7080223393309205160, guid: e949af2319aa3ed4e9edb49275827885, type: 3}
+  healthBarPrefab: {fileID: 848519574596962870, guid: 855c3082d7dc6f04ebacd790860732f4, type: 3}
+  coinTextPrefab: {fileID: 8796388244635439006, guid: 06c2e31f0dc5d914ea4770128ac4da92, type: 3}
   speed: 0.01
   health: 20
   coin: 0

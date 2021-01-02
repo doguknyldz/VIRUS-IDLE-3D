@@ -1,30 +1,71 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TowerController : MonoBehaviour
 {
-    public Text coinText;
-    public Slider stamina;
+    public TMP_Text coinText;
+    public Image stamina;
     public GameObject turret;
     public GameObject bulletPrefab;
-    public GameObject UpgradeTimer;
-    public GameObject UpPanel;
     public float cooldown=1;
     public float damage=10;
     public int coin = 10;
     public int totalCoin;
-    bool isShot=true;
+    public Upgrade[] upgrade;
+    bool isShot = true;
+    BulletController bc;
+
 
     private void Update()
     {
         coinText.text = "Toplam Para: " + totalCoin;
-        stamina.value += cooldown / 100;
-        if (stamina.value == stamina.maxValue)
+        stamina.fillAmount += cooldown / 100;
+        if (stamina.fillAmount == 1)
         {
             isShot = true;
         }
+
+        for (int i = 0; i < upgrade.Length; i++)
+        {
+            if (upgrade[i].isActive)
+            {
+                upgrade[i].timer += Time.deltaTime;
+                upgrade[i].upFillArea.fillAmount = upgrade[i].timer / upgrade[i].activeTime;
+            }
+            if (upgrade[i].timer>= upgrade[i].activeTime)
+            {
+                UpgradeOff(i);
+                upgrade[i].isActive = false;
+                upgrade[i].upGameObject.SetActive(false);
+            }
+
+        }
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit,100.0f) && Input.GetMouseButtonDown(0))
+        {
+            if (hit.collider.tag == "CoinUP")
+            {
+                UpgradeOn(0);
+                Destroy(hit.collider.gameObject);
+            }
+            if (hit.collider.tag == "CooldownUP")
+            {
+                UpgradeOn(1);
+                Destroy(hit.collider.gameObject);
+            }
+            if (hit.collider.tag == "DamageUP")
+            {
+                UpgradeOn(2);
+                Destroy(hit.collider.gameObject);
+            }
+        }
+
+
     }
 
     private void OnCollisionStay(Collision collision)
@@ -35,51 +76,66 @@ public class TowerController : MonoBehaviour
             {
                 GameObject bullet = Instantiate(bulletPrefab);
                 bullet.transform.position = turret.transform.position;
-                bullet.GetComponent<BulletController>().target = collision.gameObject.transform.position;
-                bullet.GetComponent<BulletController>().damage = damage;
-                bullet.GetComponent<BulletController>().coin = coin;
-                stamina.value = 0;
+                bc = bullet.GetComponent<BulletController>();
+                bc.target = collision.gameObject.transform.position;
+                bc.damage = damage;
+                bc.coin = coin;
+                stamina.fillAmount = 0;
                 isShot = false;
             }
         }
     }
 
-    public void Upgrade(int id)
+    private void UpgradeOn(int id)
     {
         switch (id)
         {
             case 0:
-                coin *= 2;
-                GameObject UpTimer0 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer0.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 155, 0, 255);
-                UpTimer0.transform.GetChild(3).GetComponent<Text>().text = "2x \n COIN";
-                StartCoroutine(SpawnUpgrade(id));
-                Destroy(UpTimer0, 5);
+                if (upgrade[0].isActive)
+                {
+                    upgrade[0].timer = 0;
+                }
+                else
+                {
+                    upgrade[0].upGameObject.SetActive(true);
+                    upgrade[0].isActive = true;
+                    upgrade[0].timer = 0;
+                    coin *= 2;
+                }
                 break;
             case 1:
-                cooldown *= 2;
-                GameObject UpTimer1 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer1.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(0, 200, 255, 255);
-                UpTimer1.transform.GetChild(3).GetComponent<Text>().text = "2x \n SPEED";
-                StartCoroutine(SpawnUpgrade(id));
-                Destroy(UpTimer1, 5);
+                if (upgrade[1].isActive)
+                {
+                    upgrade[1].timer = 0;
+                }
+                else
+                {
+                    upgrade[1].upGameObject.SetActive(true);
+                    upgrade[1].isActive = true;
+                    upgrade[1].timer = 0;
+                    cooldown *= 2;
+                }
                 break;
             case 2:
-                damage *= 2;
-                GameObject UpTimer2 = Instantiate(UpgradeTimer, UpPanel.transform);
-                UpTimer2.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-                UpTimer2.transform.GetChild(3).GetComponent<Text>().text = "2x \n DAMAGE";
-                StartCoroutine(SpawnUpgrade(id));
-                Destroy(UpTimer2, 5);
+                if (upgrade[2].isActive)
+                {
+                    upgrade[2].timer = 0;
+                }
+                else
+                {
+                    upgrade[2].upGameObject.SetActive(true);
+                    upgrade[2].isActive = true;
+                    upgrade[2].timer = 0;
+                    damage *= 2;
+                }
                 break;
             default:
                 break;
         }
     }
 
-    IEnumerator SpawnUpgrade(int id)
+    private void UpgradeOff(int id)
     {
-        yield return new WaitForSeconds(5);
         switch (id)
         {
             case 0:
@@ -95,4 +151,14 @@ public class TowerController : MonoBehaviour
                 break;
         }
     }
+}
+
+
+[Serializable] public class Upgrade
+{
+    public float activeTime;
+    public float timer = 0;
+    public bool isActive = false;
+    public GameObject upGameObject;
+    public Image upFillArea;
 }

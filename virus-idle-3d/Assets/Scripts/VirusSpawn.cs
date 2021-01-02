@@ -8,25 +8,33 @@ public class VirusSpawn : MonoBehaviour
     public GameObject[] UpgradesPrefab;
     public float spawnTimeEnemy;
     public float spawnTimeUpgrade;
-    private void Start()
+    float timeEnemy;
+    float timeUpgrade;
+
+    private void Update()
     {
-        StartCoroutine(SpawnEnemy());
-        StartCoroutine(SpawnUpgrade());
+        timeEnemy += Time.deltaTime;
+        timeUpgrade += Time.deltaTime;
+        if (timeEnemy >= spawnTimeEnemy)
+        {
+            SpawnEnemy();
+            timeEnemy = 0;
+        }
+        if (timeUpgrade >= spawnTimeUpgrade)
+        {
+            SpawnUpgrade();
+            timeUpgrade = 0;
+        }
     }
 
-
-    IEnumerator SpawnEnemy()
+    void SpawnEnemy()
     {
-        yield return new WaitForSeconds(spawnTimeEnemy);
         GameObject virus = Instantiate(virusPrefab);
         virus.transform.position = new Vector3(13, Random.Range(0f, 2f), Random.Range(-1.5f, 1.5f));
-        StartCoroutine(SpawnEnemy());
     }
-    IEnumerator SpawnUpgrade()
+    void SpawnUpgrade()
     {
-        yield return new WaitForSeconds(spawnTimeUpgrade);
         GameObject Upgrade = Instantiate(UpgradesPrefab[Random.Range(0,UpgradesPrefab.Length)]);
         Upgrade.transform.position = new Vector3(13, Random.Range(0f, 2f), Random.Range(-1.5f, 1.5f));
-        StartCoroutine(SpawnUpgrade());
     }
 }
