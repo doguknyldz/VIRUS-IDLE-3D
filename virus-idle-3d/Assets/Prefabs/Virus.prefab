@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarPrefab: {fileID: 848519574596962870, guid: 855c3082d7dc6f04ebacd790860732f4, type: 3}
   coinTextPrefab: {fileID: 8796388244635439006, guid: 06c2e31f0dc5d914ea4770128ac4da92, type: 3}
-  speed: 0.01
+  speed: 1
   health: 20
   coin: 0
 --- !u!64 &2586861903637464108

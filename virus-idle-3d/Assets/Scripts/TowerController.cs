@@ -10,19 +10,19 @@ public class TowerController : MonoBehaviour
     public Image stamina;
     public GameObject turret;
     public GameObject bulletPrefab;
-    public float cooldown=1;
-    public float damage=10;
+    public float cooldown = 1;
+    public float damage = 10;
     public int coin = 10;
     public int totalCoin;
     public Upgrade[] upgrade;
     bool isShot = true;
     BulletController bc;
 
-
+  
     private void Update()
     {
         coinText.text = "Toplam Para: " + totalCoin;
-        stamina.fillAmount += cooldown / 100;
+        stamina.fillAmount += cooldown / 1 * Time.deltaTime;
         if (stamina.fillAmount == 1)
         {
             isShot = true;
@@ -34,12 +34,13 @@ public class TowerController : MonoBehaviour
             {
                 upgrade[i].timer += Time.deltaTime;
                 upgrade[i].upFillArea.fillAmount = upgrade[i].timer / upgrade[i].activeTime;
-            }
-            if (upgrade[i].timer>= upgrade[i].activeTime)
-            {
-                UpgradeOff(i);
-                upgrade[i].isActive = false;
-                upgrade[i].upGameObject.SetActive(false);
+
+                if (upgrade[i].timer >= upgrade[i].activeTime)
+                {
+                    UpgradeOff(i);
+                    upgrade[i].isActive = false;
+                    upgrade[i].upGameObject.SetActive(false);
+                }
             }
 
         }

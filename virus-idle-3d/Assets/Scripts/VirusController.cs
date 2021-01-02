@@ -20,23 +20,26 @@ public class VirusController : MonoBehaviour
     private void Start()
     {
         maxhealth = health;
-        Destroy(gameObject, 20);
-        Destroy(healthBar,20);
 
         canvas = FindObjectOfType<Canvas>();
         tower = GameObject.FindGameObjectWithTag("Player");
+
         healthBar = Instantiate(healthBarPrefab, canvas.transform);
         healthBarFull=healthBar.transform.GetChild(0).GetComponent<Image>();
         healthBar.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
         Camera.main.WorldToScreenPoint(transform.position).y + 60, 0);
         healthBarFull.fillAmount = 1;
+
+        Destroy(gameObject, 30);
+        Destroy(healthBar, 30);
     }
     private void Update()
     {
-        transform.position = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
+        transform.position = new Vector3(transform.position.x - speed*Time.deltaTime, transform.position.y, transform.position.z);
         healthBar.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
                 Camera.main.WorldToScreenPoint(transform.position).y + 60, 0);
         healthBarFull.fillAmount = health/ maxhealth;
+        
         if (health<=0)
         {
             GameObject coinText = Instantiate(coinTextPrefab, canvas.transform);
