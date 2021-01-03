@@ -531,6 +531,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f09b908198aae049b36c4f2f1ed615e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tower: {fileID: 442313849}
+  tc: {fileID: 442313851}
+  canvas: {fileID: 1053659839}
   virusPrefab: {fileID: 4517419862903542071, guid: e67191cc803606b48b503b808a47cf68, type: 3}
   UpgradesPrefab:
   - {fileID: 8745432867232502430, guid: e6802126d99587c49953be68d6a5d7a3, type: 3}
@@ -639,7 +642,6 @@ GameObject:
   m_Component:
   - component: {fileID: 442313854}
   - component: {fileID: 442313853}
-  - component: {fileID: 442313852}
   - component: {fileID: 442313851}
   m_Layer: 6
   m_Name: Tower
@@ -667,6 +669,7 @@ MonoBehaviour:
   cooldown: 1
   damage: 10
   coin: 10
+  range: 0
   totalCoin: 0
   upgrade:
   - activeTime: 5
@@ -684,19 +687,6 @@ MonoBehaviour:
     isActive: 0
     upGameObject: {fileID: 776857394}
     upFillArea: {fileID: 1433642419}
---- !u!135 &442313852
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442313849}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &442313853
 Rigidbody:
   m_ObjectHideFlags: 0

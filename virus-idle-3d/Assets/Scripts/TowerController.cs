@@ -13,12 +13,16 @@ public class TowerController : MonoBehaviour
     public float cooldown = 1;
     public float damage = 10;
     public int coin = 10;
+    public float range;
     public int totalCoin;
     public Upgrade[] upgrade;
     bool isShot = true;
     BulletController bc;
 
-  
+
+    List<GameObject> virus = new List<GameObject>();
+    bool isLocked = false;
+    GameObject lockVirus;
     private void Update()
     {
         coinText.text = "Toplam Para: " + totalCoin;
@@ -47,7 +51,7 @@ public class TowerController : MonoBehaviour
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit,100.0f) && Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out hit, 100.0f) && Input.GetMouseButtonDown(0))
         {
             if (hit.collider.tag == "CoinUP")
             {
@@ -67,23 +71,46 @@ public class TowerController : MonoBehaviour
         }
 
 
+
+        for (int i = virus.Count-1; i >= 0; i--)
+        {
+            if (virus[i] != null)
+            {
+                if (inDistance(virus[i].transform, range) && !isLocked)
+                {
+                    lockVirus = virus[i];
+                    isLocked = true;
+                }
+            }
+            else
+            {
+                virus.RemoveAt(i);
+            }
+        }
+
+
+        if (lockVirus!=null && inDistance(lockVirus.transform, range))
+        {
+            Shot(lockVirus);
+        }
+        else
+        {
+            isLocked = false;
+        }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void Shot(GameObject lv)
     {
-        if (collision.collider.tag == "Enemy")
+        if (isShot)
         {
-            if (isShot)
-            {
-                GameObject bullet = Instantiate(bulletPrefab);
-                bullet.transform.position = turret.transform.position;
-                bc = bullet.GetComponent<BulletController>();
-                bc.target = collision.gameObject.transform.position;
-                bc.damage = damage;
-                bc.coin = coin;
-                stamina.fillAmount = 0;
-                isShot = false;
-            }
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = turret.transform.position;
+            bc = bullet.GetComponent<BulletController>();
+            bc.target = lv.transform.position;
+            bc.damage = damage;
+            bc.coin = coin;
+            stamina.fillAmount = 0;
+            isShot = false;
         }
     }
 
@@ -152,10 +179,23 @@ public class TowerController : MonoBehaviour
                 break;
         }
     }
+    
+    private bool inDistance(Transform vi,float dis)
+    {
+        Vector3 vec = vi.position - transform.position;
+        return Vector3.Dot(transform.right, vec) <= dis && Vector3.Dot(transform.right, vec) >= 0;
+    }
+
+    public void VirusAdd(GameObject v)
+    {
+        virus.Add(v);
+    }
+
 }
 
 
-[Serializable] public class Upgrade
+[Serializable]
+public class Upgrade
 {
     public float activeTime;
     public float timer = 0;
