@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5024345799213188993}
   - component: {fileID: 7088376279883641675}
   - component: {fileID: 5853738969080419879}
-  - component: {fileID: 1293217873663784607}
+  - component: {fileID: -1566722921989679634}
   m_Layer: 0
   m_Name: CoinUP
   m_TagString: CoinUP
@@ -96,8 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
---- !u!64 &1293217873663784607
-MeshCollider:
+--- !u!135 &-1566722921989679634
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -106,7 +106,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -24993354237138243, guid: 4c392546ed2130248979169ae47a7fe7, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.43301266
+  m_Center: {x: 0, y: 0.36749998, z: 0}

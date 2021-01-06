@@ -16,20 +16,19 @@ public class TowerController : MonoBehaviour
     public float range;
     public int totalCoin;
     public Upgrade[] upgrade;
-    bool isShot = true;
+    bool isShotReady = true;
     BulletController bc;
 
 
-    List<GameObject> virus = new List<GameObject>();
+    List<GameObject> virusList = new List<GameObject>();
     bool isLocked = false;
     GameObject lockVirus;
     private void Update()
     {
-        coinText.text = "Toplam Para: " + totalCoin;
         stamina.fillAmount += cooldown / 1 * Time.deltaTime;
         if (stamina.fillAmount == 1)
         {
-            isShot = true;
+            isShotReady = true;
         }
 
         for (int i = 0; i < upgrade.Length; i++)
@@ -49,47 +48,41 @@ public class TowerController : MonoBehaviour
 
         }
 
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100.0f) && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if (hit.collider.tag == "CoinUP")
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
             {
-                UpgradeOn(0);
-                Destroy(hit.collider.gameObject);
-            }
-            if (hit.collider.tag == "CooldownUP")
-            {
-                UpgradeOn(1);
-                Destroy(hit.collider.gameObject);
-            }
-            if (hit.collider.tag == "DamageUP")
-            {
-                UpgradeOn(2);
-                Destroy(hit.collider.gameObject);
-            }
-        }
-
-
-
-        for (int i = virus.Count-1; i >= 0; i--)
-        {
-            if (virus[i] != null)
-            {
-                if (inDistance(virus[i].transform, range) && !isLocked)
+                if (hit.collider.tag == "CoinUP")
                 {
-                    lockVirus = virus[i];
-                    isLocked = true;
+                    UpgradeOn(0);
+                    Destroy(hit.collider.gameObject);
+                }
+                if (hit.collider.tag == "CooldownUP")
+                {
+                    UpgradeOn(1);
+                    Destroy(hit.collider.gameObject);
+                }
+                if (hit.collider.tag == "DamageUP")
+                {
+                    UpgradeOn(2);
+                    Destroy(hit.collider.gameObject);
                 }
             }
-            else
+        }
+
+
+        for (int i = virusList.Count - 1; i >= 0; i--)
+        {
+            if (inDistance(virusList[i].transform, range) && !isLocked)
             {
-                virus.RemoveAt(i);
+                lockVirus = virusList[i];
+                isLocked = true;
             }
         }
 
 
-        if (lockVirus!=null && inDistance(lockVirus.transform, range))
+        if (lockVirus != null && inDistance(lockVirus.transform, range))
         {
             Shot(lockVirus);
         }
@@ -101,16 +94,17 @@ public class TowerController : MonoBehaviour
 
     private void Shot(GameObject lv)
     {
-        if (isShot)
+        if (isShotReady)
         {
-            GameObject bullet = Instantiate(bulletPrefab);
-            bullet.transform.position = turret.transform.position;
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+
             bc = bullet.GetComponent<BulletController>();
             bc.target = lv.transform.position;
             bc.damage = damage;
+            //CHECK konuþulacak
             bc.coin = coin;
             stamina.fillAmount = 0;
-            isShot = false;
+            isShotReady = false;
         }
     }
 
@@ -179,16 +173,24 @@ public class TowerController : MonoBehaviour
                 break;
         }
     }
-    
-    private bool inDistance(Transform vi,float dis)
+
+    private bool inDistance(Transform virus, float dis)
     {
-        Vector3 vec = vi.position - transform.position;
-        return Vector3.Dot(transform.right, vec) <= dis && Vector3.Dot(transform.right, vec) >= 0;
+        Vector3 vec = (virus.position - transform.position).normalized;
+        return Vector3.Distance(transform.position, virus.position) <= dis && Vector3.Dot(transform.right, vec) >= 0;
     }
 
     public void VirusAdd(GameObject v)
     {
-        virus.Add(v);
+        virusList.Add(v);
+    }
+
+    public void VirusRemove(GameObject v)
+    {
+        if (virusList.Contains(v))
+        {
+            virusList.Remove(v);
+        }
     }
 
 }

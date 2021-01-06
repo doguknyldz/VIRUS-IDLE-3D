@@ -10,6 +10,7 @@ TagManager:
   - CoinUP
   - CooldownUP
   - DamageUP
+  - Limit
   layers:
   - Default
   - TransparentFX

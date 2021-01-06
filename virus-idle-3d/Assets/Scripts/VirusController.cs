@@ -16,21 +16,18 @@ public class VirusController : MonoBehaviour
     float maxhealth;
     public float health;
     public int coin;
+    TowerController tc;
 
     private void Start()
     {
         maxhealth = health;
-
-
         healthBar = Instantiate(healthBarPrefab, canvas.transform);
-        healthBarFull = healthBar.transform.GetChild(0).GetComponent<Image>();
+        healthBarFull = healthBar.GetComponent<HealthBarUIContainer>().healthBarImage;
         healthBar.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
         Camera.main.WorldToScreenPoint(transform.position).y + 60, 0);
         healthBarFull.fillAmount = 1;
-
-        Destroy(gameObject, 30);
-        Destroy(healthBar, 30);
     }
+
     private void Update()
     {
         transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y, transform.position.z);
@@ -44,11 +41,26 @@ public class VirusController : MonoBehaviour
             coinText.transform.position = new Vector3(Camera.main.WorldToScreenPoint(transform.position).x,
                 Camera.main.WorldToScreenPoint(transform.position).y, 0);
             coinText.GetComponent<TMP_Text>().text = "+" + coin;
-            tower.GetComponent<TowerController>().totalCoin += coin;
+            tc = tower.GetComponent<TowerController>();
+            tc.totalCoin += coin;
+            tc.coinText.text = "Toplam Para: " + tc.totalCoin;
             Destroy(coinText, 1);
-            Destroy(healthBar);
             Destroy(gameObject);
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Limit")
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(healthBar);
+        if (tower != null)
+            tower.GetComponent<TowerController>().VirusRemove(gameObject);
+    }
 }

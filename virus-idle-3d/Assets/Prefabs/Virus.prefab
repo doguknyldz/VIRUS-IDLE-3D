@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 168060728267736104}
   - component: {fileID: 2716203968954331362}
   - component: {fileID: -6836265641299828348}
-  - component: {fileID: 2586861903637464108}
+  - component: {fileID: 6477966225078957260}
   m_Layer: 0
   m_Name: Virus
   m_TagString: Enemy
@@ -95,13 +95,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0412dd1dd20d09c4e9c988043b9b84c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tower: {fileID: 0}
   healthBarPrefab: {fileID: 848519574596962870, guid: 855c3082d7dc6f04ebacd790860732f4, type: 3}
+  canvas: {fileID: 0}
   coinTextPrefab: {fileID: 8796388244635439006, guid: 06c2e31f0dc5d914ea4770128ac4da92, type: 3}
   speed: 1
   health: 20
   coin: 0
---- !u!64 &2586861903637464108
-MeshCollider:
+--- !u!135 &6477966225078957260
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -110,7 +112,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -24993354237138243, guid: 4c392546ed2130248979169ae47a7fe7, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.43301266
+  m_Center: {x: 0, y: 0.36749998, z: 0}
